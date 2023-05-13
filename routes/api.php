@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,7 +19,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-
-Route::get('test', function () {
-    return "Yes this is working!";
+// Registeration route
+Route::post('/auth/register', [ AuthController::class, 'registerUser' ]);
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::post('/auth/login', [ AuthController::class, 'login' ]);
 });
+
