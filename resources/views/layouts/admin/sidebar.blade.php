@@ -26,20 +26,20 @@
                     </a>
                 </li>
 
-                <li class="sidebar-item">
+                {{-- <li class="sidebar-item">
                     <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{ route('fees') }}" aria-expanded="false">
                         <i class="fa fa-dollar-sign" aria-hidden="true"></i>
                         <span class="hide-menu"> Fees </span>
                     </a>
-                </li>
+                </li> --}}
 
-                <li class="sidebar-item">
+                {{-- <li class="sidebar-item">
                     <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{ route('settings') }}" aria-expanded="false">
                         <i class="fa fa-cog" aria-hidden="true"></i>
                         <span class="hide-menu"> Settings </span>
                     </a>
-                </li>
-               
+                </li> --}}
+
                <li class="sidebar-item">
                     <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{ route('optimize') }}" aria-expanded="false">
                         <i class="fa fa-code" aria-hidden="true"></i>

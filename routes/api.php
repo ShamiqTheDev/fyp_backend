@@ -15,13 +15,18 @@ use App\Http\Controllers\AuthController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
-// Registeration route
+// Login Registeration routes
 Route::post('/auth/register', [ AuthController::class, 'registerUser' ]);
+Route::post('/auth/login', [ AuthController::class, 'loginUser' ]);
+// END: Login Registeration routes
+
 Route::middleware(['auth:sanctum'])->group(function () {
-    Route::post('/auth/login', [ AuthController::class, 'login' ]);
+    Route::get('/test', function () {
+        return response()->json([ 'message' => 'Fuck YoUUUUUU!']);
+    });
 });
 

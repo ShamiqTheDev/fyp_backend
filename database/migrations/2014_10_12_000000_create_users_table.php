@@ -23,7 +23,7 @@ class CreateUsersTable extends Migration
             $table->enum('type', [ 'admin', 'appuser' ])->default('appuser');
 
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->string('password', 120);
             $table->rememberToken();
             $table->timestamps();
         });

@@ -8,9 +8,8 @@
                     <th class="border-top-0" width="50">#</th>
                     <th class="border-top-0"> Name</th>
                     <th class="border-top-0"> Gender</th>
-                    <th class="border-top-0"> NIC No. </th>
-                    <th class="border-top-0"> Phone</th>
-                    <th class="border-top-0" width="300"> Actions </th>      
+                    <th class="border-top-0"> Email </th>
+                    <th class="border-top-0" width="300"> Actions </th>
                 </tr>
 
             </thead>
@@ -21,11 +20,10 @@
                         <td> {{ $user->id }} </td>
                         <td> <a class="text-info" href="{{ route('users.view', $user->id) }}"> {{ $user->name }} </a> </td>
                         <td> {{ $user->gender }} </td>
-                        <td> {{ $user->nic_number }} </td>
-                        <td> {{ $user->detail->phone_number }}</td>
-                        <td> 
-                        	<a class="text-success" href="{{ route('fees.entry', $user->id) }}"> Fees Payment</a>
-                            | <a class="text-primary" href="{{ route('users.edit', $user->id) }}"> Edit </a>
+                        <td> {{ $user->email }} </td>
+                        <td>
+                        	{{-- <a class="text-success" href="{{ route('fees.entry', $user->id) }}"> Fees Payment</a> --}}
+                            <a class="text-primary" href="{{ route('users.edit', $user->id) }}"> Edit </a>
                         	| <a class="text-info" href="{{ route('users.view', $user->id) }}"> View </a>
                             | <a class="text-danger" href="{{ route('users.destroy', $user->id) }}"> Delete</a>
                         </td>

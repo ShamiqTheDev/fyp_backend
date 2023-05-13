@@ -46,24 +46,29 @@ class User extends Authenticatable
     //     'email_verified_at' => 'datetime',
     // ];
 
-    public function detail()
+    public function getNameAttribute()
     {
-        return $this->hasOne(UserDetails::class);
+        return $this->first_name . ' ' . $this->last_name;
     }
 
-    public function details()
-    {
-        return $this->hasMany(UserDetails::class);
-    }
+    // public function detail()
+    // {
+    //     return $this->hasOne(UserDetails::class);
+    // }
 
-    public function registeration()
-    {
-        return $this->hasOne(Registeration::class);
-    }
+    // public function details()
+    // {
+    //     return $this->hasMany(UserDetails::class);
+    // }
 
-    public function fees()
-    {
-        return $this->hasMany(Fee::class);
-    }
+    // public function registeration()
+    // {
+    //     return $this->hasOne(Registeration::class);
+    // }
+
+    // public function fees()
+    // {
+    //     return $this->hasMany(Fee::class);
+    // }
 }
 
