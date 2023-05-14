@@ -26,7 +26,7 @@ Route::post('/auth/login', [ AuthController::class, 'loginUser' ]);
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/test', function () {
-        return response()->json([ 'message' => 'Fuck YoUUUUUU!']);
+        return response()->json([ 'message' => 'Testing!']);
     });
 });
 
