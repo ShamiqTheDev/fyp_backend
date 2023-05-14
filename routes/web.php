@@ -3,6 +3,30 @@
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => 'auth'], function() {
+
+
+    Route::get('routes', function () {
+        $routeCollection = Route::getARoutes();
+
+        echo "<table style='width:100%'>";
+        echo "<tr>";
+        echo "<td width='10%'><h4>HTTP Method</h4></td>";
+        echo "<td width='10%'><h4>Route</h4></td>";
+        echo "<td width='10%'><h4>Name</h4></td>";
+        echo "<td width='70%'><h4>Corresponding Action</h4></td>";
+        echo "</tr>";
+        foreach ($routeCollection as $value) {
+            echo "<tr>";
+            echo "<td>" . $value->methods()[0] . "</td>";
+            echo "<td>" . $value->uri() . "</td>";
+            echo "<td>" . $value->getName() . "</td>";
+            echo "<td>" . $value->getActionName() . "</td>";
+            echo "</tr>";
+        }
+        echo "</table>";
+    });
+
+
     Route::get('optimize-clear', function() {
         Artisan::call('optimize:clear');
         return redirect()->back()->with('success', 'Application is optimized!');
@@ -25,32 +49,14 @@ Route::group(['middleware' => 'auth'], function() {
 
     });
 
-    // Route::group(['prefix' => '/fees'], function() {
-    //     Route::get('/', [ App\Http\Controllers\FeesController::class, 'index' ])->name('fees');
 
-    //     Route::get('/create/{user}', [ App\Http\Controllers\FeesController::class, 'create' ])->name('fees.entry');
-    //     Route::post('/store/{user}', [ App\Http\Controllers\FeesController::class, 'store' ])->name('fees.store');
+    // Route::group(['prefix' => '/settings'], function() {
+    //     Route::get('/', [ App\Http\Controllers\SettingsController::class, 'index' ])->name('settings');
 
-    //     Route::get('/edit/{fee}', [ App\Http\Controllers\FeesController::class, 'edit' ])->name('fees.edit');
-    //     Route::post('/update/{fee}', [ App\Http\Controllers\FeesController::class, 'update' ])->name('fees.update');
+    //     Route::group(['prefix' => '/parts'], function() {
 
-    //     Route::get('/delete/{fee}', [ App\Http\Controllers\FeesController::class, 'destroy' ])->name('fees.destroy');
-
+    //     });
     // });
-
-    Route::group(['prefix' => '/settings'], function() {
-        Route::get('/', [ App\Http\Controllers\SettingsController::class, 'index' ])->name('settings');
-
-        Route::group(['prefix' => '/package'], function() {
-            Route::get('/create', [ App\Http\Controllers\PackageController::class, 'create' ])->name('package.create');
-            Route::post('/store', [ App\Http\Controllers\PackageController::class, 'store' ])->name('package.store');
-
-            Route::get('/edit/{package}', [ App\Http\Controllers\PackageController::class, 'edit' ])->name('package.edit');
-            Route::post('/update/{package}', [ App\Http\Controllers\PackageController::class, 'update' ])->name('package.update');
-
-            Route::get('/delete/{package}', [ App\Http\Controllers\PackageController::class, 'destroy' ])->name('package.destroy');
-        });
-    });
 });
 
 require __DIR__.'/auth.php';

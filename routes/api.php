@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PartsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -15,18 +16,47 @@ use App\Http\Controllers\AuthController;
 |
 */
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
-
 // Login Registeration routes
 Route::post('/auth/register', [ AuthController::class, 'registerUser' ]);
 Route::post('/auth/login', [ AuthController::class, 'loginUser' ]);
 // END: Login Registeration routes
 
+// Sanctum protected routes
 Route::middleware(['auth:sanctum'])->group(function () {
-    Route::get('/test', function () {
-        return response()->json([ 'message' => 'Testing!']);
+
+    Route::get('routes', function () {
+        $routeCollection = Route::getRoutes();
+
+        echo "<table style='width:100%'>";
+        echo "<tr>";
+        echo "<td width='10%'><h4>HTTP Method</h4></td>";
+        echo "<td width='10%'><h4>Route</h4></td>";
+        echo "<td width='70%'><h4>Corresponding Action</h4></td>";
+        echo "</tr>";
+        foreach ($routeCollection as $value) {
+            if(str_contains($value->uri(), 'api')) {
+                echo "<tr>";
+                    echo "<td>" . $value->methods()[0] . "</td>";
+                    echo "<td>" . $value->uri() . "</td>";
+                    echo "<td>" . $value->getActionName() . "</td>";
+                echo "</tr>";
+            }
+        }
+        echo "</table>";
+    });
+
+
+    Route::controller(PartsController::class)
+    ->prefix('parts')
+    ->group(function() {
+        Route::post('/create', 'create');
+        Route::get('/getAll', 'getAll');
+        Route::post('/update/{part}', 'update');
+        Route::get('/getById/{part}', 'get');
+        Route::get('/delete/{part}', 'destroy');
     });
 });
+// END: Sanctum protected routes
+
+
 
