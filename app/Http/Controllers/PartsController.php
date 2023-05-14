@@ -28,6 +28,10 @@ class PartsController extends Controller
 
             $part = new Part;
             $part->name = $request->name;
+            if ($request->has('user_id') ) {
+                $part->user_id = $request->user_id;
+            }
+            $part->name = $request->name;
             $part->description = $request->description;
             $part->save();
 
