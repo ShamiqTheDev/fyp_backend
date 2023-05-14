@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('parts', function (Blueprint $table) {
             $table->id();
 
+            $table->integer('user_id')->nullable();
             $table->string('name');
             $table->text('description')->nullable();
 
