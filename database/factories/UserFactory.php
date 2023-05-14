@@ -18,13 +18,13 @@ class UserFactory extends Factory
     public function definition()
     {
         return [
-            'first_name' => 'Super',
-            'last_name' => 'Admin',
-            'email' => 'admin@gmail.com',
-            'type' => 'admin',// admin/appuser
+            'first_name'        => 'Super',
+            'last_name'         => 'Admin',
+            'email'             => 'admin@gmail.com',
+            'type'              => 'admin',// admin/appuser
             'email_verified_at' => now(),
-            'password' => bcrypt('password'), // password
-            'remember_token' => Str::random(10),
+            'password'          => bcrypt('password'), // password
+            'remember_token'    => Str::random(10),
 
         ];
     }

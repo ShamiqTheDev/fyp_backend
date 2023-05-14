@@ -69,22 +69,6 @@ class UsersController extends Controller
 
         $saved = $user->save();
 
-        // if ( isset($user->id) ) {
-        //     $user_detials = new UserDetails;
-        //     $user_detials->user_id = $user->id;
-        //     $user_detials->phone_number = $request->phone_number;
-        //     $user_detials->address = $request->address;
-        //     $user_detials->profession = $request->profession;
-        //     $saved_details = $user_detials->save();
-
-        //     $registeration = new Registeration;
-        //     $registeration->user_id = $user->id;
-        //     $registeration->package_id = $request->package_id;
-        //     $registeration->status = $request->status;
-        //     $registeration->note = $request->note;
-        //     $registered = $registeration->save();
-        // }
-
         if ( $saved ) {
             return redirect()->back()->with('success', 'User registered');
         } else {
@@ -102,12 +86,6 @@ class UsersController extends Controller
     {
         $user = User::where('id', $user_id);
 
-        // if ( $request->has('year') ) {
-        //     $user->with(['fees' => function($query) use ($request) {
-        //         $query->whereYear('created_at', $request->year );
-        //     }]);
-        // }
-
         $user = $user->first();
 
         return view('users.view', compact('user') );
@@ -122,10 +100,9 @@ class UsersController extends Controller
     public function edit(User $user)
     {
         $action_url = route('users.update', $user->id);
-        $packages = Package::all();
         $users = User::where('email', '!=', 'admin@gmail.com')->paginate(10);
 
-        return view('users.register', compact('packages', 'action_url', 'users', 'user') );
+        return view('users.register', compact( 'action_url', 'users', 'user') );
     }
 
     /**
@@ -137,37 +114,21 @@ class UsersController extends Controller
      */
     public function update(Request $request,User $user)
     {
-        $user->name = $request->name;
+        $user->first_name = $request->first_name;
+        $user->last_name = $request->last_name;
         $user->email = $request->email;
         $user->gender = $request->gender;
-        $user->nic_number = $request->nic_number;
+        $user->type = $request->type;
+
+        $user->password = bcrypt($request->password);
 
         $saved = $user->save();
-        $user_detials = UserDetails::where('user_id', $user->id)->first();
-        if ( !$user_detials ) {
-            $user_detials = new UserDetails;
-            $user_detials->user_id = $user->id;
-        }
-        $user_detials->phone_number = $request->phone_number;
-        $user_detials->address = $request->address;
-        $user_detials->profession = $request->profession;
-        $saved_details = $user_detials->save();
 
-        $registeration = Registeration::where('user_id', $user->id)->first();
-        if ( !$registeration ) {
-            $registeration = new Registeration;
-            $registeration->user_id = $user->id;
-        }
-        $registeration->user_id = $user->id;
-        $registeration->package_id = $request->package_id;
-        $registeration->status = $request->status;
-        $registeration->note = $request->note;
-        $registered = $registeration->save();
 
-        if (isset($registered) && $registered) {
-            return redirect()->back()->with('success', 'User registeration updated');
+        if ($saved) {
+            return redirect()->back()->with('success', 'User  updated');
         } else {
-            return redirect()->back()->with('failure', 'User registeration failed');
+            return redirect()->back()->with('failure', 'User update failed');
         }
     }
 
