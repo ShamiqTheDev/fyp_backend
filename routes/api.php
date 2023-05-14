@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ExpiriesController;
 use App\Http\Controllers\PartsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -45,15 +46,24 @@ Route::middleware(['auth:sanctum'])->group(function () {
         echo "</table>";
     });
 
-
     Route::controller(PartsController::class)
-    ->prefix('parts')
-    ->group(function() {
-        Route::post('/create', 'create');
-        Route::get('/getAll', 'getAll');
-        Route::post('/update/{part}', 'update');
-        Route::get('/getById/{part}', 'get');
-        Route::get('/delete/{part}', 'destroy');
+        ->prefix('parts')
+        ->group(function() {
+            Route::post('/create', 'create');
+            Route::get('/getAll', 'getAll');
+            Route::post('/update/{part}', 'update');
+            Route::get('/getById/{part}', 'get');
+            Route::get('/delete/{part}', 'destroy');
+    });
+
+    Route::controller(ExpiriesController::class)
+        ->prefix('expiries')
+        ->group(function() {
+            Route::post('/create', 'create');
+            Route::get('/getAll', 'getAll');
+            Route::post('/update/{expiry}', 'update');
+            Route::get('/getById/{expiry}', 'get');
+            Route::get('/delete/{expiry}', 'destroy');
     });
 });
 // END: Sanctum protected routes
