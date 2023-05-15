@@ -87,7 +87,7 @@ class PartsController extends Controller
         try {
             return response()->json([
                 'status' => true,
-                'message' => 'Part',
+                'message' => 'Fetched!',
                 'data' => $part->toArray(),
             ], 200);
 

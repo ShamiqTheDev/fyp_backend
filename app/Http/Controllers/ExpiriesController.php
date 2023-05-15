@@ -94,7 +94,7 @@ class ExpiriesController extends Controller
         try {
             return response()->json([
                 'status' => true,
-                'message' => 'Expiry',
+                'message' => 'Fetched!',
                 'data' => $expiry->toArray(),
             ], 200);
 
