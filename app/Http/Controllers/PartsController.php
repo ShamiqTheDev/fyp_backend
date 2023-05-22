@@ -135,4 +135,27 @@ class PartsController extends Controller
         }
     }
 
+    public function getAllByUserId($user_id)
+    {
+        try {
+            $parts = Part::where(function ($query) use($user_id) {
+                $query->orWhere('user_id', $user_id)
+                ->orWhereNull('user_id')
+                ->orWhere('user_id', 1);
+            })->get();
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Fetched!',
+                'data' => $parts->toArray(),
+            ], 200);
+
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage(),
+            ], 500);
+        }
+    }
+
 }

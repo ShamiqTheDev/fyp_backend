@@ -13,8 +13,9 @@ class ExpiriesController extends Controller
     {
         try {
             $validation = Validator::make( $request->all(), [
+                'vehicle_id' => 'required',
                 'part_id' => 'required',
-                'type' => 'required',
+                'expiry' => 'required',
                 'notify_before' => 'required',
             ]);
 
@@ -28,8 +29,10 @@ class ExpiriesController extends Controller
 
             $expiry = new Expiry;
 
+            $expiry->vehicle_id = $request->vehicle_id;
             $expiry->part_id = $request->part_id;
-            $expiry->type = $request->type;
+
+            // $expiry->type = $request->type;
             $expiry->expiry = $request->expiry;
             $expiry->notify_before = $request->notify_before;
             $expiry->note = $request->note;
@@ -54,8 +57,9 @@ class ExpiriesController extends Controller
     {
         try {
             $validation = Validator::make( $request->all(), [
+                'vehicle_id' => 'required',
                 'part_id' => 'required',
-                'type' => 'required',
+                'expiry' => 'required',
                 'notify_before' => 'required',
             ]);
 
@@ -67,8 +71,8 @@ class ExpiriesController extends Controller
                 ], 401);
             }
 
-            $expiry->part_id = $request->part_id;
-            $expiry->type = $request->type;
+            // $expiry->part_id = $request->part_id;
+            // $expiry->type = $request->type;
             $expiry->expiry = $request->expiry;
             $expiry->notify_before = $request->notify_before;
             $expiry->note = $request->note;

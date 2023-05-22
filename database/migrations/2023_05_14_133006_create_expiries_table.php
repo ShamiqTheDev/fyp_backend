@@ -16,8 +16,9 @@ return new class extends Migration
         Schema::create('expiries', function (Blueprint $table) {
             $table->id();
 
+            $table->integer('vehicle_id');
             $table->integer('part_id');
-            $table->enum('type', [ 'km', 'date' ])->default('date');
+            // $table->enum('type', [ 'km', 'date' ])->nullable();
             $table->integer('expiry');
             $table->integer('notify_before');
             $table->text('note')->nullable();

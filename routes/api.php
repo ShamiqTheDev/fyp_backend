@@ -30,8 +30,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
         ->prefix('parts')
         ->group(function() {
             Route::post('/create', 'create');
-            Route::get('/getAll', 'getAll');
             Route::post('/update/{part}', 'update');
+            Route::get('/getAll', 'getAll');
+            Route::get('/getAllByUserId/{user_id}', 'getAllByUserId');
             Route::get('/getById/{part}', 'get');
             Route::get('/delete/{part}', 'destroy');
     });
@@ -50,9 +51,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
         ->prefix('vehicleRegistrations')
         ->group(function() {
             Route::post('/create', 'create');
-            Route::get('/getAll', 'getAll');
             Route::post('/update/{vehicleRegistration}', 'update');
+            Route::get('/getAll', 'getAll');
             Route::get('/getById/{vehicleRegistration}', 'get');
+            Route::get('/getAllByUserId/{user_id}', 'getAllByUserId');
             Route::get('/delete/{vehicleRegistration}', 'destroy');
     });
 });

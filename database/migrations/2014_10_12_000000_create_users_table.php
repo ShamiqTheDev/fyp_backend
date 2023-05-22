@@ -15,12 +15,14 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+
             $table->string('first_name');
             $table->string('last_name');
             $table->string('email')->unique();
-            $table->enum('gender', [ 'male', 'female' ]);
-
+            $table->enum('gender', [ 'male', 'female' ])->nullable();
             $table->enum('type', [ 'admin', 'appuser' ])->default('appuser');
+
+            $table->string('fcm_token')->nullable();
 
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password', 60);

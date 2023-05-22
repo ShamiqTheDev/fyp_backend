@@ -139,4 +139,23 @@ class VehicleRegistrationController extends Controller
         }
     }
 
+    public function getAllByUserId($user_id)
+    {
+        try {
+            $vehicleRegistration = VehicleRegistration::where('user_id', $user_id)->get();
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Fetched!',
+                'data' => $vehicleRegistration->toArray(),
+            ], 200);
+
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage(),
+            ], 500);
+        }
+    }
+
 }

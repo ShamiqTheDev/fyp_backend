@@ -16,7 +16,7 @@ class AuthController extends Controller
                 'first_name' => 'required',
                 'last_name' => 'required',
                 'email' => 'required|email|unique:users,email',
-                'gender' => 'required',
+                // 'gender' => 'required',
                 'password' => 'required',
             ]);
 
@@ -31,9 +31,10 @@ class AuthController extends Controller
             $user = new User;
             $user->first_name = $request->first_name;
             $user->last_name = $request->last_name;
-            $user->email = $request->email;
-            $user->gender = $request->gender;
-            $user->type = 'appuser';
+            $user->email = strtolower($request->email) ;
+            // $user->gender = $request->gender;
+            $user->fcm_token = $request->fcm_token;
+            // $user->type = 'appuser'; // Using defaults as appuser role
             $user->password = bcrypt($request->password);
             $user->save();
 
@@ -41,6 +42,7 @@ class AuthController extends Controller
             return response()->json([
                 'status' => true,
                 'message' => 'User created',
+                'data' => $user->toArray(),
                 'token' => $user->createToken("API TOKEN")->plainTextToken,
             ], 200);
 
@@ -69,9 +71,16 @@ class AuthController extends Controller
             }
             // dd($request->only('email', 'password'));
             // dd(Auth::attempt($request->only('email', 'password')));
+            // dd([
+            //     'email' => strtolower($request->email),
+            //     'password' => $request->password,
+            // ]);
+            $authenticated = Auth::attempt([
+                'email' => strtolower($request->email),
+                'password' => $request->password,
+            ]);
 
-
-            if (!Auth::attempt($request->only('email', 'password'))) {
+            if (!$authenticated) {
                 return response()->json([
                     'status' => false,
                     'message' => 'Incorrect email or password',
@@ -84,6 +93,7 @@ class AuthController extends Controller
             return response()->json([
                 'status' => true,
                 'message' => 'Authenticated',
+                'data' => $user->toArray(),
                 'token' => $user->createToken("API TOKEN")->plainTextToken,
             ], 200);
 
