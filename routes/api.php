@@ -52,6 +52,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         ->group(function() {
             Route::post('/create', 'create');
             Route::post('/update/{vehicleRegistration}', 'update');
+            Route::post('/updateVehicleGeolocation/{vehicleRegistration}', 'updateVehicleGeolocation');
             Route::get('/getAll', 'getAll');
             Route::get('/getById/{vehicleRegistration}', 'get');
             Route::get('/getAllByUserId/{user_id}', 'getAllByUserId');

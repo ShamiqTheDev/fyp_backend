@@ -86,6 +86,43 @@ class VehicleRegistrationController extends Controller
         }
     }
 
+    public function updateVehicleGeolocation(VehicleRegistration $vehicleRegistration, Request $request)
+    {
+        // dd($vehicleRegistration);
+        try {
+            $validation = Validator::make( $request->all(), [
+                'distance' => 'required',
+                'latitude' => 'required',
+                'longitude' => 'required',
+            ]);
+
+            if ($validation->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'validation error',
+                    'errors' => $validation->errors(),
+                ], 401);
+            }
+
+            $vehicleRegistration->distance = round($request->distance, 2);
+            $vehicleRegistration->latitude = round($request->latitude, 8);
+            $vehicleRegistration->longitude = round($request->longitude, 8);
+
+            $vehicleRegistration->update();
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Updated',
+                'data' => $vehicleRegistration->toArray(),
+            ], 200);
+
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage(),
+            ], 500);
+        }
+    }
     public function get(VehicleRegistration $vehicleRegistration)
     {
         try {

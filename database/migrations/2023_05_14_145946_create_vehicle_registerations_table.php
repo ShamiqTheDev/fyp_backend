@@ -20,6 +20,10 @@ return new class extends Migration
             $table->string('name');
             $table->string('number');
 
+            $table->decimal('distance', 8, 2)->default('0.00');
+            $table->string('latitude', 20)->default('0');
+            $table->string('longitude', 20)->default('0');
+
             $table->timestamps();
         });
     }
