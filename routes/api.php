@@ -34,6 +34,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::get('/getAll', 'getAll');
             Route::get('/getAllByUserId/{user_id}', 'getAllByUserId');
             Route::get('/getById/{part}', 'get');
+            Route::get('/getAllByVehicleId/{vehicle_id}', 'getAllByVehicleId');
             Route::get('/delete/{part}', 'destroy');
     });
 
@@ -44,6 +45,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::get('/getAll', 'getAll');
             Route::post('/update/{expiry}', 'update');
             Route::get('/getById/{expiry}', 'get');
+            Route::get('/getAllByVehicleId/{vehicle_id}', 'getAllByVehicleId');
             Route::get('/delete/{expiry}', 'destroy');
     });
 

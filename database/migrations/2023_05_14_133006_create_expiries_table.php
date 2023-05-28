@@ -18,9 +18,9 @@ return new class extends Migration
 
             $table->integer('vehicle_id');
             $table->integer('part_id');
-            // $table->enum('type', [ 'km', 'date' ])->nullable();
+            $table->decimal('distance', 8, 2)->default('0.00');
             $table->integer('expiry');
-            $table->integer('notify_before');
+            $table->integer('notify_at');
             $table->text('note')->nullable();
 
             $table->timestamps();

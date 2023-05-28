@@ -16,7 +16,7 @@ class ExpiriesController extends Controller
                 'vehicle_id' => 'required',
                 'part_id' => 'required',
                 'expiry' => 'required',
-                'notify_before' => 'required',
+                'notify_at' => 'required',
             ]);
 
             if ($validation->fails()) {
@@ -34,7 +34,7 @@ class ExpiriesController extends Controller
 
             // $expiry->type = $request->type;
             $expiry->expiry = $request->expiry;
-            $expiry->notify_before = $request->notify_before;
+            $expiry->notify_at = $request->notify_at;
             $expiry->note = $request->note;
 
             $expiry->save();
@@ -60,7 +60,7 @@ class ExpiriesController extends Controller
                 'vehicle_id' => 'required',
                 'part_id' => 'required',
                 'expiry' => 'required',
-                'notify_before' => 'required',
+                'notify_at' => 'required',
             ]);
 
             if ($validation->fails()) {
@@ -74,7 +74,7 @@ class ExpiriesController extends Controller
             // $expiry->part_id = $request->part_id;
             // $expiry->type = $request->type;
             $expiry->expiry = $request->expiry;
-            $expiry->notify_before = $request->notify_before;
+            $expiry->notify_at = $request->notify_at;
             $expiry->note = $request->note;
 
             $expiry->update();
@@ -136,6 +136,25 @@ class ExpiriesController extends Controller
                 'status' => true,
                 'message' => 'All parts',
                 'data' => $expirys,
+            ], 200);
+
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function getAllByVehicleId($vehicle_id)
+    {
+        try {
+            $expiries = Expiry::where('vehicle_id', $vehicle_id)->get();
+
+            return response()->json([
+                'status' => true,
+                'message' => 'All parts',
+                'data' => $expiries,
             ], 200);
 
         } catch (\Throwable $th) {

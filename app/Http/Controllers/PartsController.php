@@ -15,6 +15,8 @@ class PartsController extends Controller
         try {
 
             $validation = Validator::make( $request->all(), [
+                'user_id' => 'required',
+                'vehicle_id' => 'required',
                 'name' => 'required|min:3|max:32',
             ]);
 
@@ -31,6 +33,7 @@ class PartsController extends Controller
             if ($request->has('user_id') ) {
                 $part->user_id = $request->user_id;
             }
+            $part->vehicle_id = $request->vehicle_id;
             $part->name = $request->name;
             $part->description = $request->description;
             $part->save();
@@ -64,6 +67,7 @@ class PartsController extends Controller
                 ], 401);
             }
 
+            // $part->vehicle_id = $request->vehicle_id;
             $part->name = $request->name;
             $part->description = $request->description;
             $part->update();
@@ -158,4 +162,22 @@ class PartsController extends Controller
         }
     }
 
+    public function getAllByVehicleId($vehicle_id)
+    {
+        try {
+            $parts = Part::where('vehicle_id', $vehicle_id)->get();
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Fetched!',
+                'data' => $parts->toArray(),
+            ], 200);
+
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage(),
+            ], 500);
+        }
+    }
 }

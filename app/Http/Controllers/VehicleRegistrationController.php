@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Expiry;
+use App\Models\Part;
 use App\Models\VehicleRegistration;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class VehicleRegistrationController extends Controller
@@ -88,9 +91,8 @@ class VehicleRegistrationController extends Controller
 
     public function updateVehicleGeolocation(VehicleRegistration $vehicleRegistration, Request $request)
     {
-        // dd($vehicleRegistration);
         try {
-            $validation = Validator::make( $request->all(), [
+            $validation = Validator::make($request->all(), [
                 'distance' => 'required',
                 'latitude' => 'required',
                 'longitude' => 'required',
@@ -104,11 +106,41 @@ class VehicleRegistrationController extends Controller
                 ], 401);
             }
 
-            $vehicleRegistration->distance = round($request->distance, 2);
+            $oldDistance = $vehicleRegistration->distance;
+            $newDistance = round($request->distance, 2);
+            $partsDistanceIncrement = $newDistance - $oldDistance;
+            $vehicleId = $vehicleRegistration->id;
+            $userId = $vehicleRegistration->user_id;
+
+
+            $vehicleRegistration->distance = $newDistance;
             $vehicleRegistration->latitude = round($request->latitude, 8);
             $vehicleRegistration->longitude = round($request->longitude, 8);
-
             $vehicleRegistration->update();
+
+            $expiries = Expiry::where('vehicle_id',  $vehicleId)->get();
+
+            $expiriesData = [];
+            foreach ($expiries as $expiry) {
+                $eDistance = $expiry->distance + $partsDistanceIncrement;
+                $expiryData['distance'] = $eDistance;
+                $expiryId = $expiry->id;
+                Expiry::where('id', $expiry->id)->update($expiryData);
+
+                // Sending Upcoming Expiry notification!
+                if($eDistance >= $expiry->notify_at){
+                    // get user device id and etc...
+                    //send notification here!
+                    Log::channel('apis')->info("Notification sent for expiryId: {$expiryId}");
+                } // END: Sending Upcoming Expiry notification!
+
+                // Sending Part Expired Notification!
+                if($eDistance >= $expiry->notify_at){
+                    // get user device id and etc...
+                    //send notification here!
+                    Log::channel('apis')->info("Notification sent for expiryId: {$expiryId}");
+                } // END: Sending Part Expired Notification!
+            }
 
             return response()->json([
                 'status' => true,
@@ -117,6 +149,7 @@ class VehicleRegistrationController extends Controller
             ], 200);
 
         } catch (\Throwable $th) {
+            Log::channel('apis')->error($th);
             return response()->json([
                 'status' => false,
                 'message' => $th->getMessage(),
