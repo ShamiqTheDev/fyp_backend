@@ -3,14 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Expiry;
-use App\Models\Part;
 use App\Models\User;
 use App\Models\VehicleRegistration;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Kutia\Larafirebase\Facades\Larafirebase;
-
 
 
 class VehicleRegistrationController extends Controller
@@ -133,8 +131,9 @@ class VehicleRegistrationController extends Controller
                 $expiryData['distance'] = $eDistance;
                 $expiryId = $expiry->id;
 
-                $updated = Expiry::where('id', $expiry->id)->update($expiryData);
-                // dd($part->vehicleRegistration->name);
+                Expiry::where('id', $expiry->id)->update($expiryData);
+
+                $user = User::where('id', $userId)->first();
 
                 // Sending Upcoming Expiry notification!
                 if($eDistance >= $expiry->notify_at){
@@ -144,10 +143,7 @@ class VehicleRegistrationController extends Controller
                     $body .= ' Part: '.$part->name.' is about to expire';
                     $body .= ' Ran: '.$eDistance.' KMs';
 
-
-                    $user = User::find($userId);
-                    // $user->notify(new FirebaseNotification($title, $body));
-
+                    $this->sendNotification($user->fcm_token, $title, $body);
 
                     Log::channel('apis')->info("Notification sent for expiryId: {$expiryId}");
                     Log::channel('apis')->info("Title: {$title}");
@@ -162,11 +158,7 @@ class VehicleRegistrationController extends Controller
                     $body = 'Your Vehicle: '.$part->vehicleRegistration->name;
                     $body .= ' Part: '.$part->name.' is about to expire';
                     $body .= ' Ran: '.$eDistance.' KMs';
-
-
-                    $user = User::where('id', $userId)->first();
                     $this->sendNotification($user->fcm_token, $title, $body);
-
 
                     Log::channel('apis')->info("Notification sent for expiryId: {$expiryId}");
                     Log::channel('apis')->info("Title: {$title}");
@@ -192,11 +184,14 @@ class VehicleRegistrationController extends Controller
 
     public function sendNotification($fcm_tokens, $title, $body)
     {
-        return Larafirebase::sendMessage($fcm_tokens)
-            ->withTitle($title)
-            ->withBody($body)
-            ->withPriority('high')
-            ->withSound('default');
+        try {
+            Larafirebase::sendMessage($fcm_tokens)
+                ->withTitle($title)
+                ->withBody($body);
+        } catch (\Throwable $th) {
+            // throw $th;
+            Log::channel('apis')->info($th);
+        }
     }
 
     public function get(VehicleRegistration $vehicleRegistration)
