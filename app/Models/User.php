@@ -2,15 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\VehicleRegistration;
+// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use App\Models\UserDetails;
-use App\Models\Package;
-use App\Models\Registeration;
-use App\Models\Fee;
 
 class User extends Authenticatable
 {
@@ -51,24 +48,10 @@ class User extends Authenticatable
         return $this->first_name . ' ' . $this->last_name;
     }
 
-    // public function detail()
-    // {
-    //     return $this->hasOne(UserDetails::class);
-    // }
 
-    // public function details()
-    // {
-    //     return $this->hasMany(UserDetails::class);
-    // }
-
-    // public function registeration()
-    // {
-    //     return $this->hasOne(Registeration::class);
-    // }
-
-    // public function fees()
-    // {
-    //     return $this->hasMany(Fee::class);
-    // }
+    public function vehicleRegistrations()
+    {
+        return $this->hasMany(VehicleRegistration::class);
+    }
 }
 

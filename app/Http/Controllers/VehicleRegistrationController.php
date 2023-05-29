@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Expiry;
 use App\Models\Part;
+use App\Models\User;
 use App\Models\VehicleRegistration;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+
+
 
 class VehicleRegistrationController extends Controller
 {
@@ -89,7 +92,7 @@ class VehicleRegistrationController extends Controller
         }
     }
 
-    public function updateVehicleGeolocation(VehicleRegistration $vehicleRegistration, Request $request)
+    public function updateVehicleGeolocation($vehicle_registration_id, Request $request)
     {
         try {
             $validation = Validator::make($request->all(), [
@@ -106,39 +109,72 @@ class VehicleRegistrationController extends Controller
                 ], 401);
             }
 
+            $vehicleRegistration = VehicleRegistration::with('expiries')->with('parts.expiries')
+                ->find($vehicle_registration_id);
+
             $oldDistance = $vehicleRegistration->distance;
             $newDistance = round($request->distance, 2);
             $partsDistanceIncrement = $newDistance - $oldDistance;
             $vehicleId = $vehicleRegistration->id;
             $userId = $vehicleRegistration->user_id;
 
+            $updVehicleRegistration = VehicleRegistration::find($vehicle_registration_id);
+            $updVehicleRegistration->distance = $newDistance;
+            $updVehicleRegistration->latitude = round($request->latitude, 8);
+            $updVehicleRegistration->longitude = round($request->longitude, 8);
+            $updVehicleRegistration->update();
 
-            $vehicleRegistration->distance = $newDistance;
-            $vehicleRegistration->latitude = round($request->latitude, 8);
-            $vehicleRegistration->longitude = round($request->longitude, 8);
-            $vehicleRegistration->update();
+            $parts = $vehicleRegistration->parts;
 
-            $expiries = Expiry::where('vehicle_id',  $vehicleId)->get();
-
-            $expiriesData = [];
-            foreach ($expiries as $expiry) {
+            foreach ($parts as $part) {
+                $expiry = $part->expiry;
                 $eDistance = $expiry->distance + $partsDistanceIncrement;
                 $expiryData['distance'] = $eDistance;
                 $expiryId = $expiry->id;
-                Expiry::where('id', $expiry->id)->update($expiryData);
+
+                $updated = Expiry::where('id', $expiry->id)->update($expiryData);
+                // dd($part->vehicleRegistration->name);
 
                 // Sending Upcoming Expiry notification!
                 if($eDistance >= $expiry->notify_at){
-                    // get user device id and etc...
-                    //send notification here!
+                    $title = 'Upcoming Expiry: ' . $part->name;
+
+                    $body = 'Your Vehicle: '.$part->vehicleRegistration->name;
+                    $body .= 'Part: '.$part->name.' is about to expire';
+                    $body .= 'Ran: '.$eDistance.' KMs';
+
+
+                    $user = User::find($userId);
+                    // $user->notify(new FirebaseNotification($title, $body));
+
+
                     Log::channel('apis')->info("Notification sent for expiryId: {$expiryId}");
+                    Log::channel('apis')->info("Title: {$title}");
+                    Log::channel('apis')->info("Body: {$body}");
+
                 } // END: Sending Upcoming Expiry notification!
 
                 // Sending Part Expired Notification!
-                if($eDistance >= $expiry->notify_at){
-                    // get user device id and etc...
-                    //send notification here!
+                if($eDistance >= $expiry->expiry) {
+                    $title = 'Expired: ' . $part->name;
+
+                    $body = 'Your Vehicle: '.$part->vehicleRegistration->name;
+                    $body .= 'Part: '.$part->name.' is about to expire';
+                    $body .= 'Ran: '.$eDistance.' KMs';
+
+
+                    $user = User::where('id', $userId)->first();
+
+                    // $user->notify(new FirebaseNotification($title, $body));
+
+                    // $notification = new FirebaseNotification('Notification Title', 'Notification Body');
+                    // Notification::send($user, $notification);
+
+
                     Log::channel('apis')->info("Notification sent for expiryId: {$expiryId}");
+                    Log::channel('apis')->info("Title: {$title}");
+                    Log::channel('apis')->info("Body: {$body}");
+
                 } // END: Sending Part Expired Notification!
             }
 
