@@ -69,12 +69,6 @@ class AuthController extends Controller
                     'errors' => $validation->errors(),
                 ], 401);
             }
-            // dd($request->only('email', 'password'));
-            // dd(Auth::attempt($request->only('email', 'password')));
-            // dd([
-            //     'email' => strtolower($request->email),
-            //     'password' => $request->password,
-            // ]);
             $authenticated = Auth::attempt([
                 'email' => strtolower($request->email),
                 'password' => $request->password,

@@ -9,6 +9,7 @@ use App\Models\VehicleRegistration;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use Kutia\Larafirebase\Facades\Larafirebase;
 
 
 
@@ -140,8 +141,8 @@ class VehicleRegistrationController extends Controller
                     $title = 'Upcoming Expiry: ' . $part->name;
 
                     $body = 'Your Vehicle: '.$part->vehicleRegistration->name;
-                    $body .= 'Part: '.$part->name.' is about to expire';
-                    $body .= 'Ran: '.$eDistance.' KMs';
+                    $body .= ' Part: '.$part->name.' is about to expire';
+                    $body .= ' Ran: '.$eDistance.' KMs';
 
 
                     $user = User::find($userId);
@@ -159,16 +160,12 @@ class VehicleRegistrationController extends Controller
                     $title = 'Expired: ' . $part->name;
 
                     $body = 'Your Vehicle: '.$part->vehicleRegistration->name;
-                    $body .= 'Part: '.$part->name.' is about to expire';
-                    $body .= 'Ran: '.$eDistance.' KMs';
+                    $body .= ' Part: '.$part->name.' is about to expire';
+                    $body .= ' Ran: '.$eDistance.' KMs';
 
 
                     $user = User::where('id', $userId)->first();
-
-                    // $user->notify(new FirebaseNotification($title, $body));
-
-                    // $notification = new FirebaseNotification('Notification Title', 'Notification Body');
-                    // Notification::send($user, $notification);
+                    $this->sendNotification($user->fcm_token, $title, $body);
 
 
                     Log::channel('apis')->info("Notification sent for expiryId: {$expiryId}");
@@ -181,7 +178,7 @@ class VehicleRegistrationController extends Controller
             return response()->json([
                 'status' => true,
                 'message' => 'Updated',
-                'data' => $vehicleRegistration->toArray(),
+                // 'data' => $vehicleRegistration->toArray(),
             ], 200);
 
         } catch (\Throwable $th) {
@@ -192,6 +189,16 @@ class VehicleRegistrationController extends Controller
             ], 500);
         }
     }
+
+    public function sendNotification($fcm_tokens, $title, $body)
+    {
+        return Larafirebase::sendMessage($fcm_tokens)
+            ->withTitle($title)
+            ->withBody($body)
+            ->withPriority('high')
+            ->withSound('default');
+    }
+
     public function get(VehicleRegistration $vehicleRegistration)
     {
         try {
