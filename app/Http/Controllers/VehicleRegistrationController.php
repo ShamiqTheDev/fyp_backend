@@ -58,7 +58,7 @@ class VehicleRegistrationController extends Controller
     {
         try {
             $validation = Validator::make( $request->all(), [
-                'user_id' => 'required',
+                // 'user_id' => 'required',
                 'name' => 'required',
                 'number' => 'required',
             ]);
@@ -71,7 +71,7 @@ class VehicleRegistrationController extends Controller
                 ], 401);
             }
 
-            $vehicleRegistration->user_id = $request->user_id;
+            // $vehicleRegistration->user_id = $request->user_id;
             $vehicleRegistration->name = $request->name;
             $vehicleRegistration->number = $request->number;
 
@@ -143,7 +143,7 @@ class VehicleRegistrationController extends Controller
                     $body .= ' Part: '.$part->name.' is about to expire';
                     $body .= ' Ran: '.$eDistance.' KMs';
 
-                    $this->sendNotification($user->fcm_token, $title, $body);
+                    $this->sendNotification($title, $body, $user->fcm_token);
 
                     Log::channel('apis')->info("Notification sent for expiryId: {$expiryId}");
                     Log::channel('apis')->info("Title: {$title}");
@@ -158,7 +158,7 @@ class VehicleRegistrationController extends Controller
                     $body = 'Your Vehicle: '.$part->vehicleRegistration->name;
                     $body .= ' Part: '.$part->name.' is about to expire';
                     $body .= ' Ran: '.$eDistance.' KMs';
-                    $this->sendNotification($user->fcm_token, $title, $body);
+                    $this->sendNotification($title, $body, $user->fcm_token);
 
                     Log::channel('apis')->info("Notification sent for expiryId: {$expiryId}");
                     Log::channel('apis')->info("Title: {$title}");
@@ -182,12 +182,12 @@ class VehicleRegistrationController extends Controller
         }
     }
 
-    public function sendNotification($fcm_tokens, $title, $body)
+    public function sendNotification($title, $body, $fcm_tokens)
     {
         try {
-            Larafirebase::sendMessage($fcm_tokens)
-                ->withTitle($title)
-                ->withBody($body);
+            return Larafirebase::fromArray(['title' => $title, 'body' => $body])
+                        ->sendNotification($fcm_tokens);
+
         } catch (\Throwable $th) {
             // throw $th;
             Log::channel('apis')->info($th);
