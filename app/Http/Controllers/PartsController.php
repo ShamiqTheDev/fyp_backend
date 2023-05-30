@@ -165,7 +165,7 @@ class PartsController extends Controller
     public function getAllByVehicleId($vehicle_id)
     {
         try {
-            $parts = Part::where('vehicle_id', $vehicle_id)->get();
+            $parts = Part::with('expiry')->where('vehicle_id', $vehicle_id)->get();
 
             return response()->json([
                 'status' => true,
