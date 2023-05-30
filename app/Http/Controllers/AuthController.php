@@ -82,7 +82,7 @@ class AuthController extends Controller
                 ], 401);
             }
 
-            $user = User::where('email', $request->email)->first();
+            $user = User::with('vehicleRegistrations')->where('email', $request->email)->first();
 
             return response()->json([
                 'status' => true,
