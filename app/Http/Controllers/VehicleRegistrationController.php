@@ -128,8 +128,9 @@ class VehicleRegistrationController extends Controller
             foreach ($parts as $part) {
                 $expiry = $part->expiry;
                 $eDistance = $expiry->distance + $partsDistanceIncrement;
-                $expiryData['distance'] = $eDistance;
+
                 $expiryId = $expiry->id;
+                $expiryData['distance'] = $eDistance;
 
                 Expiry::where('id', $expiry->id)->update($expiryData);
 
