@@ -5,10 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-use App\Models\Package;
-
-class Registeration extends Model
+class SectionLink extends Model
 {
     use HasFactory;
 
+    public function menu_section()
+    {
+        return $this->belongsTo(MenuSection::class, 'menu_section_id');
+    }
 }

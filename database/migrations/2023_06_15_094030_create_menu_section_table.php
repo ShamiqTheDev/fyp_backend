@@ -13,15 +13,17 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('expiries', function (Blueprint $table) {
+        Schema::create('menu_sections', function (Blueprint $table) {
             $table->id();
 
-            $table->integer('vehicle_id');
-            $table->integer('part_id');
-            $table->decimal('distance', 8, 2)->default('0.00');
-            $table->integer('expiry');
-            $table->integer('notify_at');
-            $table->text('note')->nullable();
+            $table->string('title');
+            $table->integer('main_menu_id');
+            $table->string('link')->nullable();
+            $table->string('img_link');
+            $table->string('html_class')->nullable();
+            $table->string('sort');
+
+            $table->enum('type', [ 'links_list', 'cards' ])->default('links_list');
 
             $table->timestamps();
         });
@@ -34,6 +36,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('expiries');
+        Schema::dropIfExists('menu_sections');
     }
 };

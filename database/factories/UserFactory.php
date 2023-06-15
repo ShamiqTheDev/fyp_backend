@@ -20,10 +20,10 @@ class UserFactory extends Factory
         return [
             'first_name'        => 'Super',
             'last_name'         => 'Admin',
-            'email'             => 'admin@gmail.com',
-            'type'              => 'admin',// admin/appuser
+            'email'             => 'megamenu@squatwolf.com',
+            'type'              => 'admin',// admin/frontend
             'email_verified_at' => now(),
-            'password'          => bcrypt('password'), // password
+            'password'          => bcrypt('megamenu.backend@squatwolf.com'), // megamenu.backend@squatwolf.com
             'remember_token'    => Str::random(10),
 
         ];

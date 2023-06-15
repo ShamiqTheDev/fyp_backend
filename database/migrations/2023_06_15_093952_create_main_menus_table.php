@@ -13,16 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('vehicle_registrations', function (Blueprint $table) {
+        Schema::create('main_menus', function (Blueprint $table) {
             $table->id();
 
-            $table->integer('user_id');
-            $table->string('name');
-            $table->string('number');
-
-            $table->decimal('distance', 8, 2)->default('0.00');
-            $table->string('latitude', 20)->default('0');
-            $table->string('longitude', 20)->default('0');
+            $table->integer('menu_group_id');
+            $table->string('title');
+            $table->string('link')->nullable();
+            $table->string('html_class')->nullable();
+            $table->string('sort');
 
             $table->timestamps();
         });
@@ -35,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('vehicle_registrations');
+        Schema::dropIfExists('main_menus');
     }
 };
