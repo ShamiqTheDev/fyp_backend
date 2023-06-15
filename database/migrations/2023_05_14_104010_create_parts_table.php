@@ -13,15 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('section_links', function (Blueprint $table) {
+        Schema::create('parts', function (Blueprint $table) {
             $table->id();
 
-            $table->integer('menu_section_id');
-            $table->string('title');
-            $table->string('link');
-            $table->string('img_link');
-            $table->string('sort');
-            $table->string('html_class')->nullable();
+            $table->integer('user_id')->nullable();
+            $table->integer('vehicle_id')->nullable();
+            $table->string('name');
+            $table->text('description')->nullable();
 
             $table->timestamps();
         });
@@ -34,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('section_links');
+        Schema::dropIfExists('parts');
     }
 };

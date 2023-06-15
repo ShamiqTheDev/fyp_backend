@@ -1,15 +1,16 @@
 @extends('layout')
 
-@section('title', $title.' Listing')
+@section('title', 'Application Settings')
 @section('content')
 
-
     <div class="container-fluid">
+
         <div class="row">
             <div class="col-sm-12">
-                @include($prefix.'.listing')
+            	@include('chunks.packages_listing')
             </div>
         </div>
     </div>
+
 
 @endsection

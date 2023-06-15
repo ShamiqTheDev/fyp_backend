@@ -4,13 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
 
-class MenuGroup extends Model
+class UserDetails extends Model
 {
     use HasFactory;
 
-    public function menus()
+
+    public function user()
     {
-        return $this->hasMany(MainMenu::class);
+        return $this->belongsTo(User::class);
     }
 }

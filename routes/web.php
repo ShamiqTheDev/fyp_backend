@@ -1,9 +1,5 @@
 <?php
 
-use App\Http\Controllers\MainMenuController;
-use App\Http\Controllers\MenuGroupController;
-use App\Http\Controllers\MenuSectionController;
-use App\Http\Controllers\SectionLinkController;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => 'auth'], function() {
@@ -53,76 +49,14 @@ Route::group(['middleware' => 'auth'], function() {
 
     });
 
-    Route::controller(MenuGroupController::class)
-        ->prefix('menugroup')
-        ->name('menugroup.')
-        ->group(function() {
-            Route::get('/', 'index')->name('index');
 
-            Route::get('/create', 'create')->name('create');
-            Route::post('/store', 'store')->name('store');
+    // Route::group(['prefix' => '/settings'], function() {
+    //     Route::get('/', [ App\Http\Controllers\SettingsController::class, 'index' ])->name('settings');
 
-            Route::get('/view/{menuGroup}', 'view')->name('view');
+    //     Route::group(['prefix' => '/parts'], function() {
 
-            Route::get('/edit/{menuGroup}', 'edit')->name('edit');
-            Route::post('/update/{menuGroup}', 'update')->name('update');
-
-            Route::get('/delete/{menuGroup}', 'destroy')->name('destroy');
-    });
-
-    Route::controller(MainMenuController::class)
-        ->prefix('mainmenu')
-        ->name('mainmenu.')
-        ->group(function() {
-            Route::get('/', 'index')->name('index');
-
-            Route::get('/create', 'create')->name('create');
-            Route::post('/store', 'store')->name('store');
-
-            Route::get('/view/{mainMenu}', 'view')->name('view');
-
-            Route::get('/edit/{mainMenu}', 'edit')->name('edit');
-            Route::post('/update/{mainMenu}', 'update')->name('update');
-
-            Route::get('/delete/{mainMenu}', 'destroy')->name('destroy');
-    });
-
-    Route::controller(MenuSectionController::class)
-        ->prefix('menusection')
-        ->name('menusection.')
-        ->group(function() {
-
-            Route::get('/', 'index')->name('index');
-
-            Route::get('/create', 'create')->name('create');
-            Route::post('/store', 'store')->name('store');
-
-            Route::get('/view/{menuSection}', 'view')->name('view');
-
-            Route::get('/edit/{menuSection}', 'edit')->name('edit');
-            Route::post('/update/{menuSection}', 'update')->name('update');
-
-            Route::get('/delete/{menuSection}', 'destroy')->name('destroy');
-    });
-
-    Route::controller(SectionLinkController::class)
-        ->prefix('sectionlink')
-        ->name('sectionlink.')
-        ->group(function() {
-
-            Route::get('/', 'index')->name('index');
-
-            Route::get('/create', 'create')->name('create');
-            Route::post('/store', 'store')->name('store');
-
-            Route::get('/view/{sectionLink}', 'view')->name('view');
-
-            Route::get('/edit/{sectionLink}', 'edit')->name('edit');
-            Route::post('/update/{sectionLink}', 'update')->name('update');
-
-            Route::get('/delete/{sectionLink}', 'destroy')->name('destroy');
-    });
-
+    //     });
+    // });
 });
 
 require __DIR__.'/auth.php';

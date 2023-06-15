@@ -19,7 +19,8 @@ class CreateUsersTable extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->string('email')->unique();
-            $table->enum('type', [ 'admin', 'frontend' ])->default('frontend');
+            $table->enum('gender', [ 'male', 'female' ])->nullable();
+            $table->enum('type', [ 'admin', 'appuser' ])->default('appuser');
 
             $table->string('fcm_token')->nullable();
 

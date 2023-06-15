@@ -8,14 +8,14 @@
                 <!-- Logo icon -->
                 <b class="logo-icon">
                     <!-- Dark Logo icon -->
-                    <img style="height:51px" src="{{ asset('/logo.png') }}" alt="homepage" />
+                    <img src="{{ asset('plugins/images/logo-icon.png') }}" alt="homepage" />
                 </b>
                 <!--End Logo icon -->
                 <!-- Logo text -->
-                {{-- <span class="logo-text">
+                <span class="logo-text">
                     <!-- dark Logo text -->
                     <h2 class="text-dark">GAD</h2>
-                </span> --}}
+                </span>
             </a>
             <!-- ============================================================== -->
             <!-- End Logo -->
@@ -50,12 +50,12 @@
                     <div class="d-md-block me-3">
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
-                            <button type="submit" class="btn btn-light">
+                            <button type="submit" class="btn btn-light"> 
                                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-log-out feather-sm text-dark"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg> Logout</button>
                         </form>
 
                 </li>
-
+              
             </ul>
         </div>
     </nav>

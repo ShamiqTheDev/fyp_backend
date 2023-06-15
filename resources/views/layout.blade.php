@@ -6,8 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title> {{env('APP_NAME')}} | @yield('title') </title>
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('/favicon.png') }}">
+    <title> ADMIN PANEL | @yield('title') </title>
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('plugins/images/favicon.png') }}">
     <link href="{{ asset('plugins/bower_components/chartist/dist/chartist.min.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('plugins/bower_components/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.css') }}">
     <link href="{{ asset('css/style.min.css') }}" rel="stylesheet">
@@ -79,9 +79,9 @@
     <script src="{{ asset('js/custom.js') }}"></script>
     <!--This page JavaScript -->
     <!--chartis chart-->
-    {{-- <script src="{{ asset('plugins/bower_components/chartist/dist/chartist.min.js') }}"></script>
+    <script src="{{ asset('plugins/bower_components/chartist/dist/chartist.min.js') }}"></script>
     <script src="{{ asset('plugins/bower_components/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js') }}"></script>
-    <script src="{{ asset('js/pages/dashboards/dashboard1.js') }}"></script> --}}
+    <script src="{{ asset('js/pages/dashboards/dashboard1.js') }}"></script>
 </body>
 
 </html>

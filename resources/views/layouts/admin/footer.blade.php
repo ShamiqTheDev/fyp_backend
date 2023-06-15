@@ -1,1 +1,1 @@
-<footer class="footer text-center"> Copyrights {{ date('Y') }} © ALPHA ECOMMERCE FZ LLC</a> </footer>
+<footer class="footer text-center"> Copyrights 2021 © GAD</a> </footer>
